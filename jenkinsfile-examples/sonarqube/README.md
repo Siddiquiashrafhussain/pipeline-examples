@@ -4,7 +4,7 @@ Demonstrate an example of a Jenkinsfile to analyze and send results to SonarQube
 
 # Pre-requisites
 
-- [SonarQube Plugin 2.5](https://wiki.jenkins-ci.org/display/JENKINS/SonarQube+plugin)
+- SonarQube Scanner for Jenkins plugin installed and configured in Jenkins
 
 # Instructions
 

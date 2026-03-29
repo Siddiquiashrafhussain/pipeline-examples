@@ -30,3 +30,14 @@ This is a collection of tips, advice, gotchas and other best practices for using
 # Scripted Pipeline development tips
 * When developing new flows, you can often iterate faster with an inline pipeline, rather than running from SCM. You can use the 'load' operation to load common utility methods from common pipelines, and then as you finish out methods, commit them to the utility flows.  This lets you strike a balance between having traceability on commits and being able to move fast.
  * NOTE: this isn't possible with Multibranch pipelines, since those *have* to pull their script from SCM completely, so you will probably want to do your initial development iteration on a single branch using this approach before moving to `Jenkinsfile`s.
+
+# Modern Declarative baseline
+* For new examples, prefer Declarative Pipeline with this minimum shape: `pipeline { agent any stages { stage('Build') { steps { ... } } } }`.
+* Use explicit `stage('name')` blocks with a nested `steps {}` block. Avoid legacy forms like unlabeled `stage {}` or direct step calls outside `steps {}`.
+* Prefer `post { success { ... } failure { ... } }` for notifications and cleanup behavior instead of wrapping the whole Pipeline in broad `try/catch` blocks.
+* Keep examples copy/paste-ready on current Jenkins LTS by avoiding deprecated steps and replacing legacy aliases with current step names (for example, `archiveArtifacts` instead of `archive`).
+
+# Security and sandbox guidance
+* Keep Groovy logic small and deterministic. Prefer Pipeline steps (`sh`, `bat`, `checkout scm`, etc.) over custom Groovy APIs that may require script approval.
+* Avoid direct filesystem access from Groovy runtime code for examples. Run filesystem operations inside approved Pipeline steps executed on agents.
+* Use explicit parameter passing to helper methods (for example, pass `branchName` into a method) instead of relying on implicit global state.
